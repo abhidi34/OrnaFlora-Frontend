@@ -1,0 +1,22 @@
+export const products = [
+  { id: 1, name: 'Fiddle Leaf Fig', price: 49, category: 'Large', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=0b1d3a3b6f4b6f9d8c8e0e7b6d5f9d1a' },
+  { id: 2, name: 'Snake Plant', price: 24, category: 'Indoor', image: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=9b6d65f6e2a7b2d1a8f4c3e5b6d7a8c2' },
+  { id: 3, name: 'Monstera Deliciosa', price: 59, category: 'Large', image: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=9b6d65f6e2a7b2d1a8f4c3e5b6d7a8c2' },
+  { id: 4, name: 'Pothos', price: 18, category: 'Climbing', image: 'https://images.unsplash.com/photo-1524594154905-0e1e9a61b1a8?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=3c2b4d5a6e7f8a9b0c1d2e3f4a5b6c7d' },
+  { id: 5, name: 'Aloe Vera', price: 15, category: 'Succulents', image: 'https://images.unsplash.com/photo-1550221680-8e5b1d1b1d9a?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=8b6a5c4d3e2f1a0b9c8d7e6f5a4b3c2d' },
+  { id: 6, name: 'Rubber Plant', price: 45, category: 'Large', image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=5a2b6a3c4d5e6f7a8b9c0d1e2f3a4b5c' },
+  { id: 7, name: 'Philodendron', price: 35, category: 'Climbing', image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=5a2b6a3c4d5e6f7a8b9c0d1e2f3a4b5c' },
+  { id: 8, name: 'Peace Lily', price: 28, category: 'Indoor', image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=4f5e6d7c8b9a0c1d2e3f4a5b6c7d8e9f' },
+  { id: 9, name: 'Jade Plant', price: 22, category: 'Succulents', image: 'https://images.unsplash.com/photo-1550221680-8e5b1d1b1d9a?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=8b6a5c4d3e2f1a0b9c8d7e6f5a4b3c2d' },
+  { id: 10, name: 'Cactus Mix', price: 12, category: 'Succulents', image: 'https://images.unsplash.com/photo-1550221680-8e5b1d1b1d9a?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=8b6a5c4d3e2f1a0b9c8d7e6f5a4b3c2d' },
+  { id: 11, name: 'Boston Fern', price: 32, category: 'Indoor', image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=5a2b6a3c4d5e6f7a8b9c0d1e2f3a4b5c' },
+  { id: 12, name: 'Dracaena', price: 26, category: 'Indoor', image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=4f5e6d7c8b9a0c1d2e3f4a5b6c7d8e9f' },
+  { id: 13, name: 'Spider Plant', price: 20, category: 'Indoor', image: 'https://images.unsplash.com/photo-1524594154905-0e1e9a61b1a8?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=3c2b4d5a6e7f8a9b0c1d2e3f4a5b6c7d' },
+  { id: 14, name: 'Areca Palm', price: 55, category: 'Large', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=0b1d3a3b6f4b6f9d8c8e0e7b6d5f9d1a' },
+  { id: 15, name: 'String of Pearls', price: 19, category: 'Succulents', image: 'https://images.unsplash.com/photo-1550221680-8e5b1d1b1d9a?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=8b6a5c4d3e2f1a0b9c8d7e6f5a4b3c2d' },
+  { id: 16, name: 'Scindapsus Pictus', price: 29, category: 'Climbing', image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=4f5e6d7c8b9a0c1d2e3f4a5b6c7d8e9f' },
+  { id: 17, name: 'Calathea', price: 38, category: 'Indoor', image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=5a2b6a3c4d5e6f7a8b9c0d1e2f3a4b5c' },
+  { id: 18, name: 'Lavender Plant', price: 16, category: 'Succulents', image: 'https://images.unsplash.com/photo-1550221680-8e5b1d1b1d9a?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=8b6a5c4d3e2f1a0b9c8d7e6f5a4b3c2d' },
+  { id: 19, name: 'Bird of Paradise', price: 65, category: 'Large', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=0b1d3a3b6f4b6f9d8c8e0e7b6d5f9d1a' },
+  { id: 20, name: 'Bamboo Plant', price: 42, category: 'Large', image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=5a2b6a3c4d5e6f7a8b9c0d1e2f3a4b5c' }
+];
