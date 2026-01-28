@@ -14,13 +14,35 @@ export default function AdminAuth() {
   function handleSubmit(e) {
     e.preventDefault();
     
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-      localStorage.setItem('adminUser', email);
+    // Trim whitespace and convert email to lowercase for comparison
+    const trimmedEmail = email.trim().toLowerCase();
+    const trimmedPassword = password.trim();
+    const expectedEmail = ADMIN_EMAIL.toLowerCase();
+    
+    console.log('Admin Login Attempt:', {
+      inputEmail: trimmedEmail,
+      expectedEmail: expectedEmail,
+      inputPassword: trimmedPassword,
+      expectedPassword: ADMIN_PASSWORD,
+      emailMatch: trimmedEmail === expectedEmail,
+      passwordMatch: trimmedPassword === ADMIN_PASSWORD
+    });
+    
+    if (trimmedEmail === expectedEmail && trimmedPassword === ADMIN_PASSWORD) {
+      localStorage.setItem('adminUser', ADMIN_EMAIL);
       localStorage.setItem('adminRole', 'admin');
       setError(null);
+      console.log('Admin login successful');
       navigate('/admin-dashboard');
     } else {
-      setError('Invalid admin credentials');
+      if (trimmedEmail !== expectedEmail) {
+        setError('Invalid email. Use: admin@ornaflora.com');
+      } else if (trimmedPassword !== ADMIN_PASSWORD) {
+        setError('Invalid password. Check the credentials below.');
+      } else {
+        setError('Invalid admin credentials. Please check email and password.');
+      }
+      console.log('Admin login failed');
     }
   }
 

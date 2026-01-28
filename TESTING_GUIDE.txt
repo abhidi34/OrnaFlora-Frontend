@@ -1,0 +1,323 @@
+================================================================================
+               ORNAFLORA - APPLICATION TESTING GUIDE
+================================================================================
+Date: January 28, 2026
+Development Server Status: RUNNING on http://localhost:3000
+
+================================================================================
+                         TEST CREDENTIALS
+================================================================================
+
+ADMIN LOGIN:
+  Email:    admin@ornaflora.com
+  Password: admin123
+
+CUSTOMER SIGNUP (CREATE NEW):
+  You can create new customer accounts with any email and password
+  Example: test@example.com / password123
+
+EXISTING CUSTOMER ACCOUNTS (if previously created):
+  Check localStorage for saved user accounts during testing
+
+================================================================================
+                    CUSTOMER ACCOUNT TESTING
+================================================================================
+
+1. SIGNUP AS NEW CUSTOMER
+   ✓ Go to: http://localhost:3000/auth
+   ✓ Click "Sign Up" tab
+   ✓ Enter email: customer@test.com
+   ✓ Enter password: customer123
+   ✓ Click "Sign Up" button
+   ✓ Expected: Redirect to home page, login status should show
+
+2. LOGIN AS CUSTOMER
+   ✓ Go to: http://localhost:3000/auth
+   ✓ Click "Log In" tab
+   ✓ Enter email: customer@test.com
+   ✓ Enter password: customer123
+   ✓ Click "Log In" button
+   ✓ Expected: Redirect to home page, user profile shows in header
+
+3. BROWSE & SEARCH PRODUCTS
+   ✓ Stay on home page or navigate to /shop
+   ✓ Test product filtering by category
+   ✓ Test search functionality in header search bar
+   ✓ Expected: Product list updates, search results display
+
+4. ADD PRODUCTS TO CART
+   ✓ Click "Add to Cart" button on any product
+   ✓ Use quantity controls (+/-) to adjust quantity
+   ✓ Expected: Cart badge updates in header showing item count
+
+5. VIEW CART
+   ✓ Go to: http://localhost:3000/cart
+   ✓ Verify items are listed with correct quantities and prices
+   ✓ Test quantity adjustment (- and + buttons)
+   ✓ Test remove item button
+   ✓ Verify cart summary shows subtotal, delivery, total
+   ✓ Expected: All controls work, prices calculate correctly
+
+6. PLACE ORDER
+   ✓ Go to: http://localhost:3000/order
+   ✓ Enter shipping address (if required)
+   ✓ Select payment method (should show options)
+   ✓ Click "Place Order" button
+   ✓ Expected: Order confirmed, order appears in account orders list
+
+7. VIEW ACCOUNT PROFILE
+   ✓ Click profile icon in header
+   ✓ Click "Account" option
+   ✓ Go to: http://localhost:3000/account
+   ✓ Verify three tabs: Orders, Addresses, Profile
+   ✓ Orders tab: Shows all placed orders with status
+   ✓ Addresses tab: Shows saved addresses
+   ✓ Profile tab: Shows customer information
+   ✓ Expected: All tabs functional, data displays correctly
+
+8. MANAGE ADDRESSES
+   ✓ In Account > Addresses tab
+   ✓ Click "Add Address" button
+   ✓ Fill in address details
+   ✓ Click save
+   ✓ Expected: Address added to list, can set as default
+
+9. LOGOUT CUSTOMER
+   ✓ Click profile icon in header
+   ✓ Click "Logout" option
+   ✓ Expected: Session ends, redirected to home page, login status cleared
+
+================================================================================
+                      ADMIN DASHBOARD TESTING
+================================================================================
+
+1. LOGIN AS ADMIN
+   ✓ Go to: http://localhost:3000/admin-auth
+   ✓ Enter email: admin@ornaflora.com
+   ✓ Enter password: admin123
+   ✓ Click "Login" button
+   ✓ Expected: Redirect to /admin-dashboard with admin interface
+
+2. VIEW ADMIN DASHBOARD
+   ✓ Dashboard shows three tabs: Orders, Products, Users
+   ✓ Top shows stats: Total Orders, Total Revenue, Active Users
+   ✓ Expected: All stats display correctly
+
+3. ORDERS TAB (VIEW & MANAGE ORDERS)
+   ✓ Click "Orders" tab
+   ✓ Table shows all customer orders with:
+     - Order ID
+     - Customer name & email
+     - Shipping address
+     - Amount
+     - Order date
+     - Current status
+     - Action buttons
+   ✓ Test Status Update:
+     - Click "Edit" on any order
+     - Change status dropdown (confirmed → processing → shipped → delivered)
+     - Click "Save"
+     - Expected: Order status updates in table
+
+4. PRODUCTS TAB (MANAGE PRODUCTS)
+   ✓ Click "Products" tab
+   ✓ View all products in grid format
+
+   4a. ADD NEW PRODUCT:
+       ✓ Click "Add New Product" button
+       ✓ Fill in product details:
+         - Name
+         - Price
+         - Stock quantity
+         - Category
+         - Description
+       ✓ Upload product images (multiple images supported)
+       ✓ Click "Save Product"
+       ✓ Expected: New product appears in product grid
+
+   4b. EDIT PRODUCT:
+       ✓ Click "Edit" button on any product
+       ✓ Modify any field (price, stock, images, etc.)
+       ✓ Click "Save Changes"
+       ✓ Expected: Product updates in grid and customer view
+
+   4c. UPDATE STOCK/PRICE:
+       ✓ Edit any product
+       ✓ Change stock quantity
+       ✓ Change price
+       ✓ Save changes
+       ✓ Expected: Customer sees updated price on /shop page
+
+   4d. MANAGE PRODUCT IMAGES:
+       ✓ Edit any product
+       ✓ Upload additional images
+       ✓ Expected: Multiple images stored and displayed for product
+
+   4e. DELETE PRODUCT:
+       ✓ Click "Delete" button on any product
+       ✓ Confirm deletion
+       ✓ Expected: Product removed from inventory
+
+5. USERS TAB (MANAGE USER ACCOUNTS)
+   ✓ Click "Users" tab
+   ✓ Table shows all registered customer accounts:
+     - Email
+     - Name
+     - Phone
+     - Registration date
+   ✓ Test Delete User:
+     - Click "Delete" button on any user
+     - Confirm deletion
+     - Expected: User account permanently deleted
+
+6. ADMIN LOGOUT
+   ✓ Click "Logout" button (top right)
+   ✓ Expected: Admin session ends, redirect to home page
+
+================================================================================
+                      RESPONSIVE DESIGN TESTING
+================================================================================
+
+Test on different screen sizes:
+
+1. DESKTOP (1920x1080):
+   ✓ All elements display correctly
+   ✓ Navigation visible
+   ✓ Product grid shows 4 columns
+   ✓ Admin table shows all columns
+
+2. TABLET (768x1024):
+   ✓ Navigation adapts
+   ✓ Product grid shows 2-3 columns
+   ✓ Admin table responsive
+   ✓ Cart sidebar becomes full-width
+
+3. MOBILE (375x667):
+   ✓ Mobile menu appears
+   ✓ Product grid shows 1 column
+   ✓ Cart layout stacks vertically
+   ✓ Touch-friendly button sizes (44px minimum)
+   ✓ Forms are full-width and readable
+
+================================================================================
+                         BROWSER CONSOLE CHECK
+================================================================================
+
+While testing, monitor the browser console (F12) for:
+✓ No red errors
+✓ Only yellow warnings are acceptable (AdminDashboard unused variables)
+✓ Network requests succeeding (localStorage operations)
+
+================================================================================
+                         KEY FEATURES TO VERIFY
+================================================================================
+
+FUNCTIONALITY:
+✓ User authentication (signup/login)
+✓ Product browsing and filtering
+✓ Shopping cart operations
+✓ Order placement
+✓ Admin product management
+✓ Admin user management
+✓ Admin order status updates
+✓ Responsive design on all screen sizes
+✓ Data persistence (localStorage)
+
+STYLING:
+✓ All component CSS files imported (no 404 errors)
+✓ Consistent color scheme (#2d6a4f green theme)
+✓ Proper spacing and typography
+✓ No CSS conflicts
+✓ Buttons have proper hover effects
+✓ Forms are properly styled
+
+PERFORMANCE:
+✓ Page load time reasonable
+✓ No console errors
+✓ Smooth interactions
+✓ Responsive scrolling
+
+================================================================================
+                       TROUBLESHOOTING
+================================================================================
+
+If you encounter issues:
+
+1. Clear localStorage:
+   - Open DevTools (F12)
+   - Go to Application > Local Storage
+   - Clear all data
+   - Refresh page
+
+2. Hard refresh the page:
+   - Press Ctrl+Shift+R (Windows) or Cmd+Shift+R (Mac)
+
+3. Check console for errors:
+   - Open DevTools (F12)
+   - Check Console tab for any error messages
+
+4. Verify server is running:
+   - Terminal should show: "webpack compiled with X warning(s)"
+   - Check http://localhost:3000 is accessible
+
+5. Check CSS imports:
+   - Each component should import its CSS file
+   - Example: import './Cart.css';
+
+================================================================================
+                      TESTING CHECKLIST
+================================================================================
+
+CUSTOMER TESTING:
+[ ] Signup works
+[ ] Login works
+[ ] Browse products
+[ ] Search products
+[ ] Add to cart
+[ ] Adjust quantities
+[ ] Remove from cart
+[ ] View cart
+[ ] Place order
+[ ] View account/orders
+[ ] Manage addresses
+[ ] Logout works
+
+ADMIN TESTING:
+[ ] Admin login works
+[ ] View orders
+[ ] Update order status
+[ ] Add new product
+[ ] Edit product
+[ ] Update stock/price
+[ ] Upload product images
+[ ] Delete product
+[ ] View users
+[ ] Delete user
+[ ] Admin logout works
+
+RESPONSIVE TESTING:
+[ ] Desktop (1920x1080)
+[ ] Tablet (768x1024)
+[ ] Mobile (375x667)
+[ ] No CSS errors
+[ ] All layouts adapt properly
+
+GENERAL:
+[ ] No console errors (except warnings)
+[ ] Fast page load
+[ ] Smooth interactions
+[ ] Data persists correctly
+[ ] All imports working
+
+================================================================================
+                        REPORT FINDINGS
+================================================================================
+
+Document any issues found:
+1. Issue description:
+2. Steps to reproduce:
+3. Expected behavior:
+4. Actual behavior:
+5. Browser/Screen size:
+
+================================================================================

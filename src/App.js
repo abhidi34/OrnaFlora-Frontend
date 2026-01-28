@@ -12,7 +12,6 @@ import Cart from './components/Cart';
 import Address from './components/Address';
 import Order from './components/Order';
 import Account from './components/Account';
-import AdminAuth from './components/AdminAuth';
 import AdminDashboard from './components/AdminDashboard';
 
 function Home() {
@@ -60,7 +59,6 @@ function App() {
             <Route path="/auth" element={<Auth/>} />
             <Route path="/forgot-password" element={<ForgotPassword/>} />
             <Route path="/reset-password" element={<ResetPassword/>} />
-            <Route path="/admin-login" element={<AdminAuth/>} />
             <Route path="/admin-dashboard" element={<AdminDashboard/>} />
           </Routes>
         </main>

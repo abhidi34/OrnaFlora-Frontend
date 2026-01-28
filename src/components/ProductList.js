@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import ProductCard from './ProductCard';
 import { products } from '../data/products';
+import './ProductList.css';
 
 export default function ProductList() {
   const location = useLocation();

@@ -1,0 +1,56 @@
+/* Shop Page Styles */
+
+.shop-page { 
+  padding:12px; 
+}
+
+.shop-filters { 
+  display:flex; 
+  gap:4px; 
+  flex-wrap:wrap; 
+  margin-bottom:14px; 
+}
+
+.shop-filters button { 
+  padding:8px 12px; 
+  border:1px solid #ddd; 
+  border-radius:6px; 
+  background:#fff; 
+  cursor:pointer; 
+  transition:all .2s; 
+  font-size:12px; 
+  min-height:40px; 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+  white-space:nowrap; 
+}
+
+.shop-filters button.active { 
+  background:#2d6a4f; 
+  color:#fff; 
+  border-color:#2d6a4f; 
+}
+
+/* Responsive Design */
+@media (max-width:768px) {
+  .shop-page { 
+    padding:10px; 
+  }
+  .shop-filters button { 
+    padding:6px 10px; 
+    font-size:11px; 
+    min-height:36px; 
+  }
+}
+
+@media (max-width:480px) {
+  .shop-page { 
+    padding:8px; 
+  }
+  .shop-filters button { 
+    padding:6px 8px; 
+    font-size:10px; 
+    min-height:32px; 
+  }
+}

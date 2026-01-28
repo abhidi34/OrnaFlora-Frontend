@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import './ProductCard.css';
 
 function currencySymbol() {
   const c = localStorage.getItem('currency') || 'INR';

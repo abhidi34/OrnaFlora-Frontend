@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { products } from '../data/products';
 import ProductCard from './ProductCard';
+import './Shop.css';
 
 const CATEGORIES = ['All', 'Large', 'Indoor', 'Climbing', 'Succulents'];
 

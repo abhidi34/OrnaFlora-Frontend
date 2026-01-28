@@ -1,6 +1,7 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
+import './Cart.css';
 
 export default function Cart() {
   const { cart, dispatch } = useCart();

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import './Auth.css';
 
 function LoginForm({ onSwitch }) {
   const [email, setEmail] = useState('');
@@ -7,17 +8,39 @@ function LoginForm({ onSwitch }) {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-
+  // Admin credentials
+  const ADMIN_EMAIL = 'admin@ornaflora.com';
+  const ADMIN_PASSWORD = 'admin123';
 
   function handleSubmit(e) {
     e.preventDefault();
+    
+    const trimmedEmail = email.trim().toLowerCase();
+    const trimmedPassword = password.trim();
+
+    // Check if admin login
+    if (trimmedEmail === ADMIN_EMAIL.toLowerCase() && trimmedPassword === ADMIN_PASSWORD) {
+      localStorage.setItem('adminUser', ADMIN_EMAIL);
+      localStorage.setItem('adminRole', 'admin');
+      localStorage.removeItem('currentUser'); // Clear customer login
+      setError(null);
+      console.log('Admin login successful');
+      navigate('/admin-dashboard');
+      return;
+    }
+
+    // Check customer login
     const users = JSON.parse(localStorage.getItem('users') || '{}');
     const user = users[email];
     if (!user || user.password !== password) {
       setError('Invalid email or password');
       return;
     }
+    
+    // Successful customer login
     localStorage.setItem('currentUser', email);
+    localStorage.removeItem('adminUser'); // Clear admin login
+    localStorage.removeItem('adminRole');
     setError(null);
     navigate('/');
   }
@@ -26,13 +49,39 @@ function LoginForm({ onSwitch }) {
     <form className="auth-form" onSubmit={handleSubmit}>
       <div className="field">
         <label>Email</label>
-        <input type="email" value={email} onChange={e=>setEmail(e.target.value)} required />
+        <input 
+          type="email" 
+          value={email} 
+          onChange={e=>setEmail(e.target.value)} 
+          placeholder="your@email.com"
+          required 
+        />
       </div>
       <div className="field">
         <label>Password</label>
-        <input type="password" value={password} onChange={e=>setPassword(e.target.value)} required />
+        <input 
+          type="password" 
+          value={password} 
+          onChange={e=>setPassword(e.target.value)} 
+          placeholder="••••••••"
+          required 
+        />
       </div>
       {error && <div className="error">{error}</div>}
+      
+      {/* Admin credentials hint */}
+      <div style={{ 
+        backgroundColor: '#f0f8ff', 
+        padding: '10px', 
+        borderRadius: '4px', 
+        fontSize: '11px',
+        marginBottom: '12px',
+        lineHeight: '1.4'
+      }}>
+        <p style={{ margin: '0 0 4px 0' }}><strong>Demo Admin:</strong> admin@ornaflora.com / admin123</p>
+        <p style={{ margin: '0' }}><strong>Or</strong> create a customer account above</p>
+      </div>
+      
       <div className="actions">
         <button className="auth-btn" type="submit">Login</button>
         <button type="button" className="link" onClick={onSwitch}>Go to Sign up</button>
