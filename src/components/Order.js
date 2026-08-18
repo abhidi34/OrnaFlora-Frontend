@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { apiService } from '../services/api';
 import './Order.css';
 
 export default function Order() {
@@ -9,43 +10,83 @@ export default function Order() {
   const [address, setAddress] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   const symbol = cart.currency === 'USD' ? '$' : '₹';
-  const subtotal = cart.items.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const subtotal = cart.items.reduce((sum, i) => sum + (i.price || 0) * (i.qty || 0), 0);
   const delivery = 40;
   const tax = Math.round(subtotal * 0.1);
   const total = subtotal + delivery + tax;
 
   useEffect(() => {
+    const currentUser = localStorage.getItem('user');
+    if (currentUser) {
+      try {
+        const user = JSON.parse(currentUser);
+        setUserId(user.id);
+      } catch (e) {
+        console.error('Failed to parse user from localStorage', e);
+      }
+    }
+
     const saved = localStorage.getItem('selectedAddress');
     if (saved) {
       setAddress(JSON.parse(saved));
     }
   }, []);
 
-  function handlePlaceOrder() {
+  async function handlePlaceOrder() {
     if (!address) {
       alert('Please select a delivery address');
       return;
     }
+    
+    if (!userId) {
+      alert('Please login to place an order');
+      navigate('/login');
+      return;
+    }
+
     setLoading(true);
-    setTimeout(() => {
-      const order = {
-        id: `ORD${Date.now()}`,
-        items: cart.items,
-        address,
-        total,
+    try {
+      const orderData = {
+        userId,
+        items: cart.items.map(item => ({
+          productId: item.id,
+          quantity: item.qty,
+          price: item.price
+        })),
+        addressId: address.id || null,
+        shippingAddress: {
+          name: address.name,
+          street: address.street,
+          landmark: address.landmark,
+          city: address.city,
+          zip: address.zip,
+          phone: address.phone
+        },
         paymentMethod,
-        date: new Date().toLocaleDateString(),
-        status: 'Confirmed'
+        subtotal,
+        deliveryCharge: delivery,
+        tax,
+        total,
+        status: 'PENDING'
       };
-      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-      orders.push(order);
-      localStorage.setItem('orders', JSON.stringify(orders));
+
+      const response = await apiService.createOrder(orderData);
+      
+      // Clear cart after successful order
       dispatch({ type: 'CLEAR' });
-      alert(`Order placed successfully! Order ID: ${order.id}`);
+      
+      const orderId = response.id || response.orderId || `ORD${Date.now()}`;
+      alert(`Order placed successfully! Order ID: ${orderId}`);
       navigate('/');
-    }, 1000);
+    } catch (error) {
+      console.error('Failed to place order:', error);
+      alert(`Failed to place order: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
   }
 
   function changeAddress() {

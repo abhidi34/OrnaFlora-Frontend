@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { apiService } from '../services/api';
 import './Account.css';
 
 export default function Account() {
@@ -10,6 +11,7 @@ export default function Account() {
   const [addresses, setAddresses] = useState([]);
   const [activeTab, setActiveTab] = useState('orders');
   const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
 
   useEffect(() => {
@@ -17,44 +19,76 @@ export default function Account() {
       navigate('/auth');
       return;
     }
-    const users = JSON.parse(localStorage.getItem('users') || '{}');
-    const currentUser = users[email];
-    setUser(currentUser);
-    setFormData({ name: currentUser.name, email, phone: currentUser.phone });
 
-    const userOrders = JSON.parse(localStorage.getItem('orders') || '[]');
-    setOrders(userOrders);
+    const fetchUserData = async () => {
+      try {
+        setLoading(true);
+        
+        // Get user from localStorage
+        const userJson = localStorage.getItem('user');
+        const currentUser = userJson ? JSON.parse(userJson) : null;
+        
+        if (currentUser) {
+          setUser(currentUser);
+          setFormData({ 
+            name: currentUser.name || '', 
+            email: currentUser.email || email, 
+            phone: currentUser.phone || '' 
+          });
 
-    const userAddresses = JSON.parse(localStorage.getItem('addresses') || '[]');
-    setAddresses(userAddresses);
+          // Fetch orders for this user
+          try {
+            const ordersData = await apiService.getOrders(currentUser.id);
+            setOrders(Array.isArray(ordersData) ? ordersData : ordersData.data || []);
+          } catch (err) {
+            console.error('Failed to fetch orders:', err);
+            setOrders([]);
+          }
+
+          // Fetch addresses for this user
+          try {
+            const addressesData = await apiService.getAddresses(currentUser.id);
+            setAddresses(Array.isArray(addressesData) ? addressesData : addressesData.data || []);
+          } catch (err) {
+            console.error('Failed to fetch addresses:', err);
+            setAddresses([]);
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching user data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
   }, [email, navigate]);
 
-  function handleProfilePicture(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (evt) => {
-      const users = JSON.parse(localStorage.getItem('users') || '{}');
-      users[email] = { ...users[email], avatar: evt.target.result };
-      localStorage.setItem('users', JSON.stringify(users));
-      setUser(users[email]);
-    };
-    reader.readAsDataURL(file);
-  }
-
-  function handleSaveProfile() {
-    const users = JSON.parse(localStorage.getItem('users') || '{}');
-    users[email] = { ...users[email], name: formData.name, phone: formData.phone };
-    localStorage.setItem('users', JSON.stringify(users));
-    setUser(users[email]);
-    setEditMode(false);
+  async function handleSaveProfile() {
+    if (!user) return;
+    
+    try {
+      const response = await apiService.updateUser(user.id, {
+        name: formData.name,
+        phone: formData.phone
+      });
+      
+      setUser(response);
+      localStorage.setItem('user', JSON.stringify(response));
+      setEditMode(false);
+      alert('Profile updated successfully');
+    } catch (err) {
+      console.error('Failed to update profile:', err);
+      alert(`Failed to update profile: ${err.message}`);
+    }
   }
 
   function getInitials(name) {
     return name ? name.split(' ').map(n => n[0]).join('').toUpperCase() : 'U';
   }
 
-  if (!user) return <div style={{ padding: '20px' }}>Loading...</div>;
+  if (loading) return <div style={{ padding: '20px', textAlign: 'center' }}>Loading...</div>;
+  if (!user) return <div style={{ padding: '20px', textAlign: 'center' }}>User not found</div>;
 
   return (
     <div className="account-page">
@@ -99,12 +133,12 @@ export default function Account() {
                   {orders.map(order => (
                     <div key={order.id} className="order-card">
                       <div className="order-header">
-                        <h4>{order.id}</h4>
-                        <span className="order-status">{order.status}</span>
+                        <h4>{order.id || 'Order'}</h4>
+                        <span className="order-status">{order.status || 'PENDING'}</span>
                       </div>
-                      <p className="order-date">{order.date}</p>
-                      <p className="order-items">{order.items.length} items</p>
-                      <p className="order-total">₹{order.total}</p>
+                      <p className="order-date">{order.createdDate ? new Date(order.createdDate).toLocaleDateString() : 'N/A'}</p>
+                      <p className="order-items">{order.items?.length || 0} items</p>
+                      <p className="order-total">₹{order.total || 0}</p>
                     </div>
                   ))}
                 </div>
@@ -140,11 +174,6 @@ export default function Account() {
             <section className="account-section">
               <h3>Edit Profile</h3>
               <div className="profile-edit">
-                <div className="pic-upload">
-                  <label htmlFor="avatar-input">Upload Profile Picture</label>
-                  <input id="avatar-input" type="file" accept="image/*" onChange={handleProfilePicture} />
-                </div>
-
                 {!editMode ? (
                   <div className="profile-view">
                     <p><strong>Name:</strong> {user.name}</p>

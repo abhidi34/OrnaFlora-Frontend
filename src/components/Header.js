@@ -17,19 +17,27 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const email = localStorage.getItem('currentUser');
-    if (email) {
-      const users = JSON.parse(localStorage.getItem('users') || '{}');
-      const user = users[email];
-      setCurrentUser(user);
-      setUserAvatar(user?.avatar);
-    }
-    
-    const admin = localStorage.getItem('adminUser');
-    if (admin) {
-      setAdminUser(admin);
-    }
-  }, []);
+
+  const email = localStorage.getItem('currentUser');
+  const userJson = localStorage.getItem('user');
+
+  if (email && userJson) {
+    const user = JSON.parse(userJson);
+    setCurrentUser(user);
+    setUserAvatar(user?.avatar || null);
+  } else {
+    setCurrentUser(null);
+    setUserAvatar(null);
+  }
+
+  const admin = localStorage.getItem('adminUser');
+  if (admin) {
+    setAdminUser(admin);
+  } else {
+    setAdminUser(null);
+  }
+
+}, [location]);
 
   function submitSearch(e) {
     e?.preventDefault();
@@ -43,10 +51,11 @@ export default function Header() {
   }
 
   function handleLogout() {
-    localStorage.removeItem('currentUser');
-    setCurrentUser(null);
-    navigate('/');
-  }
+  localStorage.removeItem('currentUser');
+  localStorage.removeItem('user');
+  setCurrentUser(null);
+  navigate('/');
+}
 
   function handleAdminLogout() {
     localStorage.removeItem('adminUser');
@@ -78,8 +87,12 @@ export default function Header() {
         </form>
 
         <div className="main-nav" id="main-nav">
-          <Link to="/">Home</Link>
-          <Link to="/shop">Plants</Link>
+          <Link to="/" className="nav-link nav-home" title="Home">
+            🏠 <span className="nav-label">Home</span>
+          </Link>
+          <Link to="/shop" className="nav-link nav-plants" title="Shop Plants">
+            🌿 <span className="nav-label">Plants</span>
+          </Link>
           
           {!adminUser && (
             <Link to="/cart" className="cart-link">
@@ -133,9 +146,7 @@ export default function Header() {
           ) : (
             <Link to="/auth" onClick={() => setMenuOpen(false)}>Login / Sign up</Link>
           )}
-          {!currentUser && !adminUser && (
-            <Link to="/admin-login" onClick={() => setMenuOpen(false)} style={{color: '#8e44ad', fontWeight: 'bold'}}>Admin Login</Link>
-          )}
+         
         </div>
       </nav>
     </header>

@@ -1,17 +1,41 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
+import { apiService } from '../services/api';
 import './Cart.css';
 
 export default function Cart() {
   const { cart, dispatch } = useCart();
   const navigate = useNavigate();
   const symbol = cart.currency === 'USD' ? '$' : '₹';
-  const total = cart.items.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const total = cart.items.reduce((sum, i) => sum + (i.price || 0) * (i.qty || 0), 0);
   const delivery = 40;
   const tax = Math.round(total * 0.1);
 
+  // Save cart to backend when it changes
+  useEffect(() => {
+    const saveCart = async () => {
+      const user = localStorage.getItem('user');
+      if (user && cart.items.length > 0) {
+        try {
+          const userObj = JSON.parse(user);
+          await apiService.saveCart(userObj.id, cart.items);
+        } catch (err) {
+          console.error('Failed to sync cart with backend:', err);
+        }
+      }
+    };
+
+    saveCart();
+  }, [cart.items]);
+
   function handleCheckout() {
+    const user = localStorage.getItem('user');
+    if (!user) {
+      alert('Please login first');
+      navigate('/login');
+      return;
+    }
     if (cart.items.length === 0) {
       alert('Cart is empty');
       return;
@@ -38,7 +62,7 @@ export default function Cart() {
                   <p className="price">{symbol}{item.price}</p>
                 </div>
                 <div className="item-controls">
-                  <button onClick={() => dispatch({ type: 'UPDATE_QTY', payload: { id: item.id, qty: item.qty - 1 } })}>−</button>
+                  <button onClick={() => dispatch({ type: 'UPDATE_QTY', payload: { id: item.id, qty: Math.max(1, item.qty - 1) } })}>−</button>
                   <span>{item.qty}</span>
                   <button onClick={() => dispatch({ type: 'UPDATE_QTY', payload: { id: item.id, qty: item.qty + 1 } })}>+</button>
                 </div>

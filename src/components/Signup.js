@@ -21,7 +21,7 @@ export default function Signup() {
     }
     users[email] = { password };
     localStorage.setItem('users', JSON.stringify(users));
-    alert('Signup successful (demo)');
+    alert('Signup successful');
     navigate('/login');
   }
 

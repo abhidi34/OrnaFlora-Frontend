@@ -1,4 +1,5 @@
 import React from 'react';
+import './styles/global.css';
 import './App.css';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
@@ -46,7 +47,7 @@ function App() {
     <CartProvider>
       <BrowserRouter>
         <Header />
-        <main id="main" style={{padding:12}}>
+        <main id="main" className="main-content">
           <Routes>
             <Route path="/" element={<Home/>} />
             <Route path="/shop" element={<Shop/>} />

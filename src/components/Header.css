@@ -7,8 +7,8 @@
   z-index:100; 
 }
 
-.site-header .container { 
-  max-width:1100px; 
+.site-header .container {  
+  max-width: 1200px;
   margin:0 auto; 
   display:flex; 
   align-items:center; 
@@ -21,7 +21,7 @@
 .logo-image { 
   height:36px; 
   width:auto; 
-  margin-right:6px; 
+  margin-right:1px; 
   object-fit:contain; 
 }
 
@@ -50,6 +50,38 @@
   font-size:12px; 
   padding:6px 8px; 
   white-space:nowrap; 
+}
+
+/* Navigation Links with Icons */
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #2d6a4f;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  white-space: nowrap;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  background-color: #f0f8f4;
+  color: #155724;
+}
+
+.nav-link .nav-label {
+  display: inline;
+}
+
+.nav-home::before {
+  content: '';
+}
+
+.nav-plants::before {
+  content: '';
 }
 
 .main-nav a.cta { 
@@ -92,19 +124,16 @@
   background:transparent; 
   border:0; 
   cursor:pointer; 
-  padding:2px; 
-  width:40px; 
-  height:40px; 
-  min-height:40px; 
+  padding:2px;  
   display:flex; 
   align-items:center; 
   justify-content:center; 
 }
 
 .profile-avatar { 
-  width:32px; 
-  height:32px; 
-  border-radius:50%; 
+  width:16px; 
+  height:16px; 
+  border-radius:20%; 
   background:#2d6a4f; 
   color:#fff; 
   display:flex; 
@@ -115,9 +144,9 @@
 }
 
 .profile-avatar-img { 
-  width:32px; 
-  height:32px; 
-  border-radius:50%; 
+  width:16px; 
+  height:16px; 
+  border-radius:20%; 
   object-fit:cover 
 }
 
@@ -167,8 +196,9 @@
   display:flex; 
   gap:0; 
   align-items:center; 
-  flex:1; 
-  min-width:160px; 
+  flex:1 1 auto; 
+  min-width:200px; 
+  max-width:400px;
   border:1px solid #e6efe6; 
   border-radius:6px; 
   overflow:hidden; 
@@ -190,22 +220,27 @@
 }
 
 .search-form .btn { 
-  border-left:1px solid #e6efe6; 
+  border:none; 
   border-radius:0; 
   padding:8px 10px; 
   min-height:40px; 
-  background:#fff; 
+  background:transparent; 
   color:#2d6a4f; 
   box-shadow:none; 
   display:flex; 
   align-items:center; 
   justify-content:center; 
   font-size:14px; 
+  cursor:pointer; 
 }
 
 .search-form .btn:hover { 
-  background:#f9fff9; 
+  background:transparent; 
   box-shadow:none; 
+}
+
+.search-form .btn:active { 
+  background:rgba(45,106,79,0.05); 
 }
 
 /* Mobile navigation */
@@ -217,13 +252,18 @@
   cursor:pointer; 
   padding:4px; 
   min-width:40px; 
-  min-height:40px; 
+  min-height:40px;
+  transition: all 0.2s ease;
+}
+
+.mobile-menu-btn:active {
+  transform: scale(1.1);
 }
 
 .mobile-menu { 
   display:none; 
   flex-direction:column; 
-  gap:4px; 
+  gap:0; 
   padding:8px 10px; 
   position:absolute; 
   top:50px; 
@@ -231,7 +271,10 @@
   right:0; 
   background:#fff; 
   border-bottom:1px solid #e6efe6; 
-  box-shadow:0 4px 12px rgba(16,24,16,0.1); 
+  box-shadow:0 4px 12px rgba(16,24,16,0.1);
+  max-height: calc(100vh - 70px);
+  overflow-y: auto;
+  z-index: 999;
 }
 
 .mobile-menu.open { 
@@ -239,7 +282,7 @@
 }
 
 .mobile-menu a, .mobile-menu button { 
-  padding:10px 12px; 
+  padding:12px 12px; 
   text-align:left; 
   background:transparent; 
   border:0; 
@@ -247,13 +290,19 @@
   color:#2d6a4f; 
   text-decoration:none; 
   font-size:13px; 
-  min-height:40px; 
+  min-height:44px; 
   display:flex; 
-  align-items:center; 
+  align-items:center;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.2s ease;
 }
 
-.mobile-menu a:hover, .mobile-menu button:hover { 
-  background:#f9fff9 
+.mobile-menu a:last-child, .mobile-menu button:last-child { 
+  border-bottom: none;
+}
+
+.mobile-menu a:active, .mobile-menu button:active { 
+  background:#f0f8f4;
 }
 
 /* Responsive Design */
@@ -274,8 +323,19 @@
     gap:4px; 
   }
   .main-nav a { 
-    font-size:12px; 
+    font-size:11px; 
     padding:4px 6px; 
+  }
+  .nav-link {
+    padding: 4px 6px;
+    font-size: 11px;
+  }
+  .nav-label {
+    display: none;
+  }
+  .search-form {
+    min-width: 150px;
+    max-width: 250px;
   }
 }
 
@@ -283,28 +343,37 @@
   .site-header .container { 
     flex-wrap:wrap; 
     padding:6px 10px; 
+    gap:2px;
   }
   .logo-image { 
     height:28px; 
   }
   .brand { 
     font-size:12px; 
-    min-width:80px; 
+    min-width:80px;
+    flex: 1 1 auto;
   }
   .main-nav { 
-    gap:2px; 
+    display: none;
+  }
+  .mobile-menu-btn {
+    display: inline-flex;
   }
   .main-nav a { 
     font-size:11px; 
     padding:3px 4px; 
   }
   .search-input { 
-    font-size:14px; 
-    min-height:36px; 
-    padding:8px 10px; 
+    font-size:16px; 
+    min-height:40px; 
+    padding:10px 12px;
   }
   .search-form { 
-    margin-top:4px; 
+    flex: 1 0 100%;
+    min-width: 100%;
+    margin-top: 6px;
+    order: 3;
+    max-width: 100%;
   }
   .profile-btn { 
     width:36px; 
@@ -312,14 +381,12 @@
     min-height:36px; 
   }
   .mobile-menu { 
-    top:48px; 
-    padding:6px 8px; 
-    gap:2px; 
+    top: 48px;
   }
   .mobile-menu a, .mobile-menu button { 
-    font-size:12px; 
-    padding:8px 10px; 
-    min-height:36px; 
+    font-size:13px; 
+    padding:12px 12px; 
+    min-height:44px; 
   }
 }
 
